@@ -1,0 +1,41 @@
+{
+  "Files": [
+    {
+      "Id": "/Users/quinnle/blazor-task-management-system/TaskManagementSystem/obj/Debug/net8.0/scopedcss/projectbundle/TaskManagementSystem.bundle.scp.css",
+      "PackagePath": "staticwebassets/TaskManagementSystem.bundle.scp.css"
+    },
+    {
+      "Id": "/Users/quinnle/blazor-task-management-system/TaskManagementSystem/wwwroot/app.css",
+      "PackagePath": "staticwebassets/app.css"
+    },
+    {
+      "Id": "/Users/quinnle/blazor-task-management-system/TaskManagementSystem/wwwroot/bootstrap/bootstrap.min.css",
+      "PackagePath": "staticwebassets/bootstrap/bootstrap.min.css"
+    },
+    {
+      "Id": "/Users/quinnle/blazor-task-management-system/TaskManagementSystem/wwwroot/bootstrap/bootstrap.min.css.map",
+      "PackagePath": "staticwebassets/bootstrap/bootstrap.min.css.map"
+    },
+    {
+      "Id": "/Users/quinnle/blazor-task-management-system/TaskManagementSystem/wwwroot/favicon.png",
+      "PackagePath": "staticwebassets/favicon.png"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.TaskManagementSystem.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.build.TaskManagementSystem.props",
+      "PackagePath": "build\\TaskManagementSystem.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.buildMultiTargeting.TaskManagementSystem.props",
+      "PackagePath": "buildMultiTargeting\\TaskManagementSystem.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.buildTransitive.TaskManagementSystem.props",
+      "PackagePath": "buildTransitive\\TaskManagementSystem.props"
+    }
+  ],
+  "ElementsToRemove": []
+}
