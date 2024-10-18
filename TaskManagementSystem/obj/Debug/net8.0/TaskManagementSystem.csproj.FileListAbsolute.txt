@@ -27,3 +27,4 @@
 /Users/quinnle/blazor-task-management-system/TaskManagementSystem/obj/Debug/net8.0/TaskManagementSystem.pdb
 /Users/quinnle/blazor-task-management-system/TaskManagementSystem/obj/Debug/net8.0/TaskManagementSystem.genruntimeconfig.cache
 /Users/quinnle/blazor-task-management-system/TaskManagementSystem/obj/Debug/net8.0/ref/TaskManagementSystem.dll
+/Users/quinnle/blazor-task-management-system/TaskManagementSystem/obj/Debug/net8.0/TaskManagementSystem.sourcelink.json

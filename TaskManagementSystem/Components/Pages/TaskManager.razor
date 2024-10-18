@@ -1,0 +1,80 @@
+@page "/tasks"
+@rendermode InteractiveServer
+
+<h1 style="color: red;">Task Manager System</h1>
+
+<EditForm Model="@newTask" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <!-- Title -->
+    <div>
+        <label for="title">Task Title:</label>
+        <InputText id="title" @bind-Value="newTask.Title"/>
+        <ValidationMessage For="@(() => newTask.Title)" />
+    </div>
+
+    <!-- Description -->
+    <div>
+        <label for="description">Task Description: </label>
+        <InputText id="description" @bind-Value="newTask.Description"/>
+        <ValidationMessage For="@(() => newTask.Description)" />
+    </div>
+
+    <!-- Priority -->
+    <div>
+        <label for="priority">Priority:</label>
+        <InputSelect id="priority" @bind-Value="newTask.Priority">
+            <option value="">Select Priority</option>
+            <option value="Low">Low</option>
+            <option value="Medium">Medium</option>
+            <option value="High">High</option>
+        </InputSelect>
+        <ValidationMessage For="@(() => newTask.Priority)" />
+    </div>
+
+    <!-- Status -->
+    <div>
+        <label for="status">Status:</label>
+        <InputSelect id="status" @bind-Value="newTask.Status">
+            <option value="">Select Status</option>
+            <option value="ToDo">To Do</option>
+            <option value="InProgress">In Progress</option>
+            <option value="Done">Done</option>
+        </InputSelect>
+        <ValidationMessage For="@(() => newTask.Status)" />
+    </div>
+
+    <button type="submit" style="background-color: red; color: white; border: none; border-radius: 5px;">Add Task</button>
+
+</EditForm>
+
+
+
+<!-- Diplay tasks -->
+<ul>
+    @foreach (var task in tasks) {
+        <li>
+            @task.Title
+        </li>
+    }
+</ul>
+
+
+
+@code {
+    public TodoTask newTask = new TodoTask();
+    public List<TodoTask> tasks = new();
+    private void HandleValidSubmit() {
+        tasks.Add(new TodoTask {
+            Id = tasks.Count + 1,
+            Title = newTask.Title,
+            Description = newTask.Description,
+            Priority = newTask.Priority,
+            Status = newTask.Status
+        });
+
+        // Clear the form
+        newTask = new TodoTask();
+    }
+}
