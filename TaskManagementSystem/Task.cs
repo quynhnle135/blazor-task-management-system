@@ -3,10 +3,10 @@ using System.ComponentModel.DataAnnotations;
 public class TodoTask {
     public int Id { get; set; }
 
-    [Required(ErrorMessage = "Task Title is required.")]
+    [Required(ErrorMessage = "Task's title is required.")]
     public string Title { get; set; }
 
-    [StringLength(500, ErrorMessage = "Description is too long.")]
+    [StringLength(500, ErrorMessage = "Task's description is too long.")]
     public string Description { get; set; }
 
     [Required]
