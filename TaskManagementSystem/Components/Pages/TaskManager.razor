@@ -3,28 +3,26 @@
 
 <h1 style="color: red;">Task Management System</h1>
 
-<!-- Task Form -->
+<button @onclick="SortByPriority">Sort by Priority</button>
+<button @onclick="SortByStatus">Sort by Status</button>
 
-<EditForm Model=@newTask OnValidSubmit="HandleValidSubmit">
+<EditForm Model="@newTodo" OnValidSubmit="HandleValidSubmit">
     <DataAnnotationsValidator/>
     <ValidationSummary/>
-    
+
     <div>
         <label for="title">Title:</label>
-        <InputText @bind-Value=newTask.Title />
-        <ValidationMessage For="@(() => newTask.Title)" />
+        <InputText @bind-Value="newTodo.Title"/>
     </div>
 
     <div>
         <label for="description">Description:</label>
-        <InputText @bind-Value=newTask.Description />
-        <ValidationMessage For="@(() => newTask.Description)"/>
+        <InputText @bind-Value="newTodo.Description"/>
     </div>
-    
-    <div>
-        <label for="status">Status:</label>
 
-        <InputSelect @bind-Value=newTask.Status>
+    <div>
+        <label for="status">Status</label>
+        <InputSelect @bind-Value="newTodo.Status">
             <option value="ToDo">ToDo</option>
             <option value="InProgress">InProgress</option>
             <option value="Done">Done</option>
@@ -32,54 +30,85 @@
     </div>
 
     <div>
-        <label for="priority">Priority</label>
-
-        <InputSelect @bind-Value=newTask.Priority>
-        <option value="Low">Low</option>
-        <option value="Medium">Medium</option>
-        <option value="High">High</option>
+        <label for="priority">Prioirty</label>
+        <InputSelect @bind-Value="newTodo.Priority">
+            <option value="Low">Low</option>
+            <option value="Medium">Medium</option>
+            <option value="High">High</option>
         </InputSelect>
     </div>
-    <button style="color: white; background-color: red; border: none; border-radius: 5px;" type="submit">Add Task</button>
+    <button style="border: none; border-radius: 5px; background-color: red; color: white;" type="submit">Add</button>
 </EditForm>
 
+<!--Display output-->
 
-<!--Display tasks-->
-
-<h3 style="color: blue;"> You have @tasks.Count(t => t.Status == global::TaskStatus.ToDo) task(s) to complete.</h3>
+<h3>You have @todos.Count(t => t.Status == global::TodoStatus.ToDo ||  t.Status == global::TodoStatus.InProgress) task(s) to complete.</h3>
 <ul>
-    @foreach (var task in tasks.OrderBy(t => t.Status)) {
+     @foreach (var todo in todos) {
         <li style="list-style-type: none;">
-        @if(task.Status == global::TaskStatus.Done) {
-            <span style="color: green; text-decoration: line-through;">@task.Title - @task.Priority</span>
-        } else if (task.Status == global::TaskStatus.InProgress || task.Status == global::TaskStatus.ToDo) {
-            <input type="checkbox" @onclick="() => MarkAsComplete(task)">
-            <span style="color: @(task.Status == global::TaskStatus.ToDo ? "red" : "orange")">@task.Title - @task.Priority</span>
-        }
-       <button style="border: none; border-radius: 5px; color: blue; font-size: 13px; margin-left: 20px;" @onclick="() => RemoveTask(task)">Remove Task</button>
-       </li>
-    }
+            @if(todo.Status == global::TodoStatus.Done) {
+                <span style="text-decoration: line-through; color: green;">@todo.Title</span>
+            } else if (todo.Status == global::TodoStatus.InProgress || todo.Status == global::TodoStatus.ToDo) {
+                <input type="checkbox" @onclick="() => MarkAsDone(todo)"/>
+                <span style="color: @(todo.Status == global::TodoStatus.InProgress ? "orange" : "red");">@todo.Title</span>
+            }
+            
+            <button style="color: red; border: none; border-radius: 5px;" @onclick="() => DeleteTask(todo)">Delete</button>
+
+        </li>        
+    } 
 </ul>
 
 @code {
-    public TodoTask newTask = new TodoTask();
-    public List<TodoTask> tasks = new();
+    private Todo newTodo = new Todo();
+    private List<Todo> todos = new();
 
-    void HandleValidSubmit() {
-        tasks.Add(new TodoTask {
-            ID = tasks.Count + 1, 
-            Title = newTask.Title,
-            Description = newTask.Description,
-            Status = newTask.Status,
-            Priority = newTask.Priority
+    private void HandleValidSubmit() {
+        todos.Add(new Todo {
+            Title = newTodo.Title,
+            Description = newTodo.Description, 
+            Priority=newTodo.Priority, 
+            Status=newTodo.Status
         });
     }
 
-    private void RemoveTask(TodoTask task) {
-        tasks.Remove(task);
+    private void DeleteTask(Todo todo) {
+        todos.Remove(todo);
+    }
+    private void MarkAsDone(Todo todo) {
+        todo.Status = global::TodoStatus.Done;
+    }
+    
+    private void SortByStatus() {
+        // Status (ToDo, InProgress, Done) -> Sort by Alphabetical order.
+        // tasks = tasks.OrderBy(t => t.Status).ToList();
+
+        todos = todos.OrderBy(t => GetStatusValue(t.Status)).ToList();
     }
 
-    private void MarkAsComplete(TodoTask task) {
-        task.Status = global::TaskStatus.Done;
+    
+    private void SortByPriority() {
+        // Priority (Low, Medium, High) -> Sort by Alphabetical order.
+        // tasks = tasks.OrderByDescending(t => t.Priority).ToList();
+
+        todos = todos.OrderByDescending(t => GetPriorityValue(t.Priority)).ToList();
+    }
+
+    private int GetStatusValue(TodoStatus status) {
+        return status switch {
+            TodoStatus.Done => 3,
+            TodoStatus.InProgress => 2,
+            TodoStatus.ToDo => 1,
+            _ => 0 // Default case
+        };
+    }
+
+    private int GetPriorityValue(TodoPriority priority) {
+        return priority switch {
+            TodoPriority.High => 3,
+            TodoPriority.Medium => 2,
+            TodoPriority.Low => 1,
+            _ => 0
+        };
     }
 }
