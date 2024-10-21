@@ -49,14 +49,15 @@
 <h3 style="color: blue;"> You have @tasks.Count(t => t.Status == global::TaskStatus.ToDo) task(s) to complete.</h3>
 <ul>
     @foreach (var task in tasks.OrderBy(t => t.Status)) {
+        <li style="list-style-type: none;">
         @if(task.Status == global::TaskStatus.Done) {
-            <li style="color: green; text-decoration: line-through;">@task.Title - @task.Priority</li>
-        } else if (task.Status == global::TaskStatus.InProgress) {
-            <li style="color: orange;">@task.Title - @task.Priority</li>
-        } else {
-            <li style="color: red;">@task.Title - @task.Priority</li>
+            <span style="color: green; text-decoration: line-through;">@task.Title - @task.Priority</span>
+        } else if (task.Status == global::TaskStatus.InProgress || task.Status == global::TaskStatus.ToDo) {
+            <input type="checkbox" @onclick="() => MarkAsComplete(task)">
+            <span style="color: @(task.Status == global::TaskStatus.ToDo ? "red" : "orange")">@task.Title - @task.Priority</span>
         }
-       <button style="border-color: blue; border-radius: 5px; color: blue; " @onclick="() => RemoveTask(task)">Remove Task</button>
+       <button style="border: none; border-radius: 5px; color: blue; font-size: 13px; margin-left: 20px;" @onclick="() => RemoveTask(task)">Remove Task</button>
+       </li>
     }
 </ul>
 
@@ -76,5 +77,9 @@
 
     private void RemoveTask(TodoTask task) {
         tasks.Remove(task);
+    }
+
+    private void MarkAsComplete(TodoTask task) {
+        task.Status = global::TaskStatus.Done;
     }
 }
