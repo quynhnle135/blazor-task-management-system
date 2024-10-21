@@ -3,74 +3,78 @@
 
 <h1 style="color: red;">Task Management System</h1>
 
-<EditForm Model="@newTask" OnValidSubmit="HandleValidSubmit">
+<!-- Task Form -->
+
+<EditForm Model=@newTask OnValidSubmit="HandleValidSubmit">
     <DataAnnotationsValidator/>
     <ValidationSummary/>
-
+    
     <div>
         <label for="title">Title:</label>
-        <InputText id="title" @bind-Value="newTask.Title" />
-        <ValidationMessage For="@(() => newTask.Title)"/>
+        <InputText @bind-Value=newTask.Title />
+        <ValidationMessage For="@(() => newTask.Title)" />
     </div>
 
     <div>
         <label for="description">Description:</label>
-        <InputText id="description" @bind-Value="newTask.Description"/>
+        <InputText @bind-Value=newTask.Description />
         <ValidationMessage For="@(() => newTask.Description)"/>
     </div>
-
+    
     <div>
         <label for="status">Status:</label>
-        <InputSelect id="status" @bind-Value="newTask.Status">
+
+        <InputSelect @bind-Value=newTask.Status>
             <option value="ToDo">ToDo</option>
             <option value="InProgress">InProgress</option>
             <option value="Done">Done</option>
         </InputSelect>
-        <ValidationMessage For="@(() => newTask.Status)"/>
     </div>
 
     <div>
-        <label for="priority">Priority:</label>
-        <InputSelect id="priority" @bind-Value="newTask.Priority">
-            <option value="Low">Low</option>
-            <option value="Medium">Medium</option>
-            <option value="High">High</option>
-        </InputSelect>
-        @* <ValidationMessage For="@(() => newTask.Priority)"/> *@
-    </div>
+        <label for="priority">Priority</label>
 
+        <InputSelect @bind-Value=newTask.Priority>
+        <option value="Low">Low</option>
+        <option value="Medium">Medium</option>
+        <option value="High">High</option>
+        </InputSelect>
+    </div>
     <button style="color: white; background-color: red; border: none; border-radius: 5px;" type="submit">Add Task</button>
 </EditForm>
 
+
+<!--Display tasks-->
+
+<h3 style="color: blue;"> You have @tasks.Count(t => t.Status == global::TaskStatus.ToDo) task(s) to complete.</h3>
 <ul>
-    @foreach (var task in tasks) {
+    @foreach (var task in tasks.OrderBy(t => t.Status)) {
         @if(task.Status == global::TaskStatus.Done) {
-            <span style="color: green;">@task.Title - @task.Priority - @task.Status</span>
-        }
-        else if(task.Status == global::TaskStatus.InProgress) {
-            <span style="color: orange;">@task.Title - @task.Priority - @task.Status</span>
+            <li style="color: green; text-decoration: line-through;">@task.Title - @task.Priority</li>
+        } else if (task.Status == global::TaskStatus.InProgress) {
+            <li style="color: orange;">@task.Title - @task.Priority</li>
         } else {
-            <span style="color: red;">@task.Title - @task.Priority - @task.Status</span>
+            <li style="color: red;">@task.Title - @task.Priority</li>
         }
-        <br>
+       <button style="border-color: blue; border-radius: 5px; color: blue; " @onclick="() => RemoveTask(task)">Remove Task</button>
     }
 </ul>
-
 
 @code {
     public TodoTask newTask = new TodoTask();
     public List<TodoTask> tasks = new();
 
-    private void HandleValidSubmit() {
+    void HandleValidSubmit() {
         tasks.Add(new TodoTask {
-            Id = tasks.Count + 1,
+            ID = tasks.Count + 1, 
             Title = newTask.Title,
             Description = newTask.Description,
-            Priority = newTask.Priority,
-            Status = newTask.Status
+            Status = newTask.Status,
+            Priority = newTask.Priority
         });
+    }
 
-        // Clear the form
-        newTask = new TodoTask();
+    private void RemoveTask(TodoTask task) {
+        tasks.Remove(task);
     }
 }
