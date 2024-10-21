@@ -1,12 +1,12 @@
 using System.ComponentModel.DataAnnotations;
 
 public class TodoTask {
-    public int Id { get; set; }
+    public int ID { get; set; }
 
-    [Required(ErrorMessage = "Task's title is required.")]
+    [Required]
     public string Title { get; set; }
 
-    [StringLength(500, ErrorMessage = "Task's description is too long.")]
+    [StringLength(500, ErrorMessage = "Description is too long (500 characters maximum!)")]
     public string Description { get; set; }
 
     [Required]
@@ -18,7 +18,7 @@ public class TodoTask {
 
 public enum TaskPriority {
     Low,
-    Medium,
+    Medium, 
     High
 }
 
